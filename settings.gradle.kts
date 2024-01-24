@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PromoAdmin"
 include(":app")
- 
+include(":api")

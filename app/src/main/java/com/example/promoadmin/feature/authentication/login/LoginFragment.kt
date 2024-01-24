@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.promoadmin.R
 import com.example.promoadmin.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +23,15 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        binding.registerSignUpButton.setOnClickListener{
+            moveToRegisterDestination()
+        }
         return binding.root
     }
+
+    private fun moveToRegisterDestination() =
+        findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+
 
 }
