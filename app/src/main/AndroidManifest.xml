@@ -33,7 +33,7 @@
            >
         </activity>
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".ui.HomeActivity"
             android:exported="true" />
     </application>
 

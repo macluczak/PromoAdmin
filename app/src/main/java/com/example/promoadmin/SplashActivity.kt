@@ -1,19 +1,11 @@
 package com.example.promoadmin
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.example.promoadmin.databinding.ActivityAuthenticationBinding
 import com.example.promoadmin.databinding.ActivitySplashBinding
-import com.example.promoadmin.feature.authentication.AuthActivity
-import com.example.promoadmin.feature.authentication.AuthViewModel
-import com.example.promoadmin.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.wait
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

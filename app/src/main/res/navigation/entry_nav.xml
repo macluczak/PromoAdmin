@@ -24,7 +24,7 @@
 
     <activity
         android:id="@+id/navigation_homeActivity"
-        android:name="com.example.promoadmin.home.HomeActivity"
+        android:name="com.example.promoadmin.ui.HomeActivity"
         android:label="Home_Acitvity"
         tools:layout="@layout/fragment_home">
 

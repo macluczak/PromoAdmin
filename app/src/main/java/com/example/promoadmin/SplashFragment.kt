@@ -35,8 +35,7 @@ class SplashFragment : Fragment() {
             lifecycleScope.launch {
                 val user = splashViewModel.getUser()
                 moveToHomeDestination(user)
-
-
+                activity?.finish()
             }
         } else
             moveToRegisterDestination()
