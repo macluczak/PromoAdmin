@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/entry_nav"
+    app:startDestination="@+id/navigation_splash"
+    >
+
+    <fragment
+        android:id="@+id/navigation_splash"
+        android:name="com.example.promoadmin.SplashFragment"
+        android:label="Splash_fragment"
+        tools:layout="@layout/fragment_splash" >
+
+        <action
+            android:id="@+id/action_splashFragment_to_authActivity"
+            app:destination="@id/navigation_authActivity" />
+
+        <action
+            android:id="@+id/action_splashFragment_to_homeActivity"
+            app:destination="@id/navigation_homeActivity"
+            />
+    </fragment>
+
+    <activity
+        android:id="@+id/navigation_homeActivity"
+        android:name="com.example.promoadmin.home.HomeActivity"
+        android:label="Home_Acitvity"
+        tools:layout="@layout/fragment_home">
+
+        <argument
+            android:name="user_object"
+            app:argType="com.example.api.user.model.User"/>
+
+    </activity>
+
+    <activity
+        android:id="@+id/navigation_authActivity"
+        android:name="com.example.promoadmin.feature.authentication.AuthActivity"
+        android:label="Auth_Activity"
+        tools:layout="@layout/fragment_login">
+
+    </activity>
+
+</navigation>

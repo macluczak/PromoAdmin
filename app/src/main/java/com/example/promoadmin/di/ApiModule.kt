@@ -1,7 +1,9 @@
 package com.example.promoadmin.di
 
+import com.example.api.authorization.AuthApi
 import com.example.api.product.ProductApi
 import com.example.api.shop.ShopApi
+import com.example.api.user.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +34,17 @@ object ApiModule {
     @Singleton
     fun provideShopApi(retrofit: Retrofit): ShopApi {
         return retrofit.create(ShopApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 }

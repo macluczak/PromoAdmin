@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".feature.authentication.AuthenticationActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -26,11 +26,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true"/>
+            android:name=".feature.authentication.AuthActivity"
+            android:exported="false"
+           >
+        </activity>
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

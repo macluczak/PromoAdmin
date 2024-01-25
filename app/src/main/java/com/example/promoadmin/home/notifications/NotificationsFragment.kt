@@ -1,4 +1,4 @@
-package com.example.promoadmin.ui.notifications
+package com.example.promoadmin.home.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater
