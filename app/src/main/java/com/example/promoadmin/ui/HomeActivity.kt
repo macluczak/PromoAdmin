@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         if (currentUser.role != "admin"){
-            navView.menu.findItem(R.id.navigation_admin).isVisible = true
+            navView.menu.findItem(R.id.navigation_admin).isVisible = false
         }
 
         navView.setupWithNavController(navController)

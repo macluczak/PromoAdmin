@@ -21,5 +21,18 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.promoadmin.feature.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/action_profileFragment_to_authActivity"
+            app:destination="@id/navigation_authActivity"
+            />
+    </fragment>
+
+    <activity
+        android:id="@+id/navigation_authActivity"
+        android:name="com.example.promoadmin.feature.authentication.AuthActivity"
+        android:label="Auth_Activity"
+        tools:layout="@layout/fragment_login">
+    </activity>
 </navigation>

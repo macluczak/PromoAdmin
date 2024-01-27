@@ -16,10 +16,8 @@ class UserRepository @Inject constructor(
 ) {
 
     var userId: String = ""
-
     var jwtToken: String = ""
-
-
+    var user: User? = null
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -29,26 +27,39 @@ class UserRepository @Inject constructor(
             putString(USER_ID_KEY, userId)
             putString(JWT_TOKEN_KEY, jwtToken)
             apply()
-        }
+        }.also { getUserIdAndToken() }
     }
 
     fun getUserIdAndToken() {
-         userId = sharedPreferences.getString(USER_ID_KEY, null).orEmpty()
-         jwtToken = sharedPreferences.getString(JWT_TOKEN_KEY, null).orEmpty()
-        Log.d("USER_PREFS", "id: ${userId}, jwt: ${jwtToken}")
+        userId = sharedPreferences.getString(USER_ID_KEY, null).orEmpty()
+        jwtToken = sharedPreferences.getString(JWT_TOKEN_KEY, null).orEmpty()
+        Log.d("USER_PREFS", "id: $userId, jwt: $jwtToken")
     }
 
-     suspend fun getUserData(): User =
-         userApi.getUser(userId, "Bearer $jwtToken")
+    private fun clearUserIdAndToken() {
+        userId = ""
+        jwtToken = ""
+    }
+
+    suspend fun getUserData(): User =
+          userApi.getUser(userId, "Bearer $jwtToken")
+
 
     fun isUserLoggedIn(): Boolean {
         getUserIdAndToken()
         return userId.isNotEmpty() && jwtToken.isNotEmpty()
     }
 
+    fun logoutUser() =
+        with(sharedPreferences.edit()) {
+            remove(USER_ID_KEY)
+            remove(JWT_TOKEN_KEY)
+            apply()
+        }.also { clearUserIdAndToken() }
+
+
     companion object {
         const val USER_ID_KEY = "user_id"
         const val JWT_TOKEN_KEY = "jwt_token"
     }
-
 }

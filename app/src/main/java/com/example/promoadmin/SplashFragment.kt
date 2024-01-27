@@ -14,6 +14,7 @@ import com.example.promoadmin.databinding.FragmentSplashBinding
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
@@ -33,8 +34,17 @@ class SplashFragment : Fragment() {
 
         if (splashViewModel.isUserLoggedIn()) {
             lifecycleScope.launch {
-                val user = splashViewModel.getUser()
-                moveToHomeDestination(user)
+                try {
+                    val user = splashViewModel.getUser()
+                    moveToHomeDestination(user)
+
+                }
+                catch (e: IOException){
+                    splashViewModel.logoutUser()
+                    moveToRegisterDestination()
+
+                }
+
                 activity?.finish()
             }
         } else

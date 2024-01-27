@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -69,6 +70,7 @@ class AuthViewModel @Inject constructor(
             try {
                 val response = authRepository.loginUser(email, password)
                 if (response.isSuccessful) {
+                    Log.d("API", "${response.body()}")
                     handleLoginSuccess(response.body())
                 } else {
                     handleLoginFailure()
@@ -85,7 +87,7 @@ class AuthViewModel @Inject constructor(
         _user.value = getUser()
     }
 
-    suspend fun getUser() = (userRepository.getUserData())
+    suspend fun getUser() = userRepository.getUserData()
 
     private suspend fun handleLoginFailure() {
         _serverError.emit("Invalid Credentials")

@@ -20,6 +20,9 @@ class SplashViewModel @Inject constructor(
         Log.d("USER_PREFS",  userRepository.isUserLoggedIn().toString())
         return userRepository.isUserLoggedIn()}
 
-    suspend fun getUser() = (userRepository.getUserData())
+    suspend fun getUser() = userRepository.getUserData()
+
+    fun logoutUser() = userRepository.logoutUser()
+
 
 }
