@@ -9,7 +9,15 @@
         android:id="@+id/navigation_home"
         android:name="com.example.promoadmin.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_StoreActivity"
+            app:destination="@id/navigation_storeActivity"
+            />
+
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_admin"
@@ -34,5 +42,16 @@
         android:name="com.example.promoadmin.feature.authentication.AuthActivity"
         android:label="Auth_Activity"
         tools:layout="@layout/fragment_login">
+    </activity>
+
+    <activity
+        android:id="@+id/navigation_storeActivity"
+        android:name="com.example.promoadmin.feature.store.StoreActivity"
+        android:label="Store_activity"
+        tools:layout="@layout/activity_store">
+
+        <argument
+            android:name="shop_object"
+            app:argType="com.example.api.shop.model.Shop"/>
     </activity>
 </navigation>

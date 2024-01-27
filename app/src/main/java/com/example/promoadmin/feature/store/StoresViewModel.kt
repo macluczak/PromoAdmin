@@ -1,4 +1,4 @@
-package com.example.promoadmin.ui.home
+package com.example.promoadmin.feature.store
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,23 +13,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel  @Inject constructor(
+class StoresViewModel @Inject constructor(
     private val shopApi: ShopApi,
     private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val _shops = MutableLiveData<List<Shop>>()
-    val shops: LiveData<List<Shop>> get() = _shops
+    private val _shop = MutableLiveData<Shop>()
+    val shop: LiveData<Shop> get() = _shop
 
     init {
         userRepository.getUserIdAndToken()
-        fetchStoresForUser()
     }
 
-    fun fetchStoresForUser() {
+    fun fetchStoreDetails(shopId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val shops = shopApi.getShopsForUser(userRepository.userId, "Bearer ${userRepository.jwtToken}")
-                _shops.postValue(shops)
+                val shopDetails = shopApi.getShopDetails(shopId, "Bearer ${userRepository.jwtToken}")
+                _shop.postValue(shopDetails)
 
             } catch (e: Exception) {
                 e.printStackTrace()

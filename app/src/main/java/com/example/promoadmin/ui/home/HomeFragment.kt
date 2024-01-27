@@ -1,16 +1,19 @@
 package com.example.promoadmin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.api.shop.model.Shop
 import com.example.promoadmin.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -29,23 +32,24 @@ class HomeFragment : Fragment() {
         val storesViewModel: HomeViewModel by viewModels({ requireActivity() })
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        storesViewModel.shops.observe(viewLifecycleOwner) {
 
-            recyclerView = binding.recyclerView
-            recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        lifecycleScope.launch {
+            storesViewModel.shops.observe(viewLifecycleOwner) { shops ->
 
-            storesAdapter = StoresListAdapter(it, ::handleOfferClick)
-            recyclerView.adapter = storesAdapter
+                recyclerView = binding.recyclerView
+                recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+                storesAdapter = StoresListAdapter(shops, ::handleOfferClick)
+                recyclerView.adapter = storesAdapter
+            }
         }
 
-        return root
+        return  binding.root
     }
 
     private fun handleOfferClick(shop: Shop) {
-//        findNavController().navigate(
-//        )
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStoreActivity(shop))
     }
 
     override fun onDestroyView() {

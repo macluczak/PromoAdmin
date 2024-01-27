@@ -35,16 +35,16 @@ class UserRepository @Inject constructor(
         jwtToken = sharedPreferences.getString(JWT_TOKEN_KEY, null).orEmpty()
         Log.d("USER_PREFS", "id: $userId, jwt: $jwtToken")
     }
-
     private fun clearUserIdAndToken() {
         userId = ""
         jwtToken = ""
     }
 
-    suspend fun getUserData(): User =
-          userApi.getUser(userId, "Bearer $jwtToken")
-
-
+    suspend fun getUserData(): User {
+        getUserIdAndToken()
+        Log.d("GET USER", userId)
+        return userApi.getUser(userId, "Bearer $jwtToken")
+    }
     fun isUserLoggedIn(): Boolean {
         getUserIdAndToken()
         return userId.isNotEmpty() && jwtToken.isNotEmpty()

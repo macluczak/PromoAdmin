@@ -33,7 +33,7 @@ class StoresListAdapter(private val deals: List<Shop>,  private val offerClickLi
 
         fun bind(shop: Shop) {
             title.text = shop.name
-            counter.text = "${shop.products.count()} deals"
+            counter.text = shop.locationCode
             loadImageWithGlide(image, shop.image)
             itemView.setOnClickListener { offerClickListener(shop)}
         }
