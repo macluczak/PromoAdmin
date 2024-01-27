@@ -55,3 +55,10 @@ data class Shop(
         }
     }
 }
+
+data class ShopRequest(
+    var name: String,
+    var description: String,
+    var image: String,
+    var locationCode: String,
+)

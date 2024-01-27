@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.api.shop.model.Shop
+import com.example.promoadmin.R
 import com.example.promoadmin.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 
@@ -24,12 +26,13 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var storesAdapter: StoresListAdapter
 
+    val storesViewModel: HomeViewModel by viewModels({ requireActivity() })
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val storesViewModel: HomeViewModel by viewModels({ requireActivity() })
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -48,12 +51,12 @@ class HomeFragment : Fragment() {
         return  binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        storesViewModel.fetchStoresForUser()
+    }
     private fun handleOfferClick(shop: Shop) {
         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToStoreActivity(shop))
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

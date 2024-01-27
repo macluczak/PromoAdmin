@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -48,7 +49,11 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-analytics")
+
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
     implementation("androidx.core:core-ktx:1.9.0")

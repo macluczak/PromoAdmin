@@ -22,7 +22,6 @@ class HomeViewModel  @Inject constructor(
 
     init {
         userRepository.getUserIdAndToken()
-        fetchStoresForUser()
     }
 
     fun fetchStoresForUser() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200948932230",
+    "project_id": "promoadmin-f9774",
+    "storage_bucket": "promoadmin-f9774.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200948932230:android:aee85e976971c957adbb07",
+        "android_client_info": {
+          "package_name": "com.example.promoadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQu1Q2hrK6GV9iQM-kuUp1sqrbJMvBBSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

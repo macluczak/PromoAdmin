@@ -16,3 +16,15 @@ fun loadImageWithGlide(imageView: ImageView, url: String) {
         )
         .into(imageView)
 }
+
+fun loadEditImageWithGlide(imageView: ImageView, url: String) {
+    Glide.with(imageView.context)
+        .load(url)
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.baseline_add_photo_alternate_24)
+                .error(R.drawable.baseline_add_photo_alternate_24)
+                .fitCenter()
+        )
+        .into(imageView)
+}

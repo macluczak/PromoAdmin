@@ -1,10 +1,14 @@
 package com.example.api.shop
 
+import com.example.api.authorization.model.RegistrationRequest
 import com.example.api.product.model.Product
 import com.example.api.shop.model.Shop
+import com.example.api.shop.model.ShopRequest
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ShopApi {
@@ -31,5 +35,11 @@ interface ShopApi {
         @Header("Authorization") token: String,
     ): List<Shop>
 
+    @PUT("/shops/{id}")
+    suspend fun editShop(
+        @Path("id") shopId: String,
+        @Header("Authorization") token: String,
+        @Body request: ShopRequest
+    ): Shop
 
 }

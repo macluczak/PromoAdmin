@@ -44,13 +44,11 @@ class SplashFragment : Fragment() {
                     moveToRegisterDestination()
 
                 }
-
-                activity?.finish()
             }
         } else
             moveToRegisterDestination()
 
-
+        activity?.finish()
         return binding.root
     }
 
