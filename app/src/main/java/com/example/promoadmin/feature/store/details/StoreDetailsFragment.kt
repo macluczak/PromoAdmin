@@ -2,44 +2,29 @@ package com.example.promoadmin.feature.store.details
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.api.shop.model.Shop
 import com.example.api.shop.model.ShopRequest
-import com.example.promoadmin.R
-import com.example.promoadmin.databinding.FragmentStoreActionsBinding
 import com.example.promoadmin.databinding.FragmentStoreDetailsBinding
 import com.example.promoadmin.feature.store.StoresViewModel
-import com.example.promoadmin.feature.store.actions.StoreActionsAdapter
 import com.example.promoadmin.feature.store.actions.StoreActionsFragmentArgs
-import com.example.promoadmin.feature.store.actions.StoreActionsFragmentDirections
-import com.example.promoadmin.feature.store.actions.model.StoreActions
 import com.example.promoadmin.util.loadEditImageWithGlide
-import com.example.promoadmin.util.loadImageWithGlide
-import com.google.firebase.Firebase
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.storage
+import com.example.promoadmin.util.toEditable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.File
+
 import java.io.IOException
 
 @AndroidEntryPoint
@@ -61,34 +46,35 @@ class StoreDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentStoreDetailsBinding.inflate(inflater, container, false)
         storesViewModel.fetchStoreDetails(args.shopObject.id.toString())
-        binding.storeBackButton.setOnClickListener { moveToStoreActions(args.shopObject) }
-        return  binding.root
+        binding.storeBackButton.setOnClickListener { backToStoreActions(args.shopObject) }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.editLl.visibility = View.INVISIBLE
-        storesViewModel.shop.observe(viewLifecycleOwner){ shop ->
-            if(shop != null) {
+        storesViewModel.shop.observe(viewLifecycleOwner) { shop ->
+            if (shop != null) {
                 loadEditImageWithGlide(binding.storeImage, shop.image)
                 binding.editStoreLocationCode.text = shop.locationCode.toEditable()
                 binding.editStoreDescription.text = shop.description.toEditable()
                 binding.editStoreName.text = shop.name.toEditable()
-                binding.editStoreImage.setOnClickListener {openImagePicker()  }
+                binding.editStoreImage.setOnClickListener { openImagePicker() }
                 binding.editLl.visibility = View.VISIBLE
                 binding.editSave.setOnClickListener {
-                    lifecycleScope.launch {
-                        try {
-                            binding.editLoad.visibility = View.VISIBLE
-                            submitModifiedShop(shop)
+                    if (isFormValid()) {
+                        lifecycleScope.launch {
+                            try {
+                                binding.editLoad.visibility = View.VISIBLE
+                                submitModifiedShop(shop)
 
-                        }catch (e: IOException){
-                            Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show()
-                        }
-                        finally {
-                            binding.editLoad.visibility = View.INVISIBLE
-                            Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
-                            moveToStoreActions(shop)
+                            } catch (e: IOException) {
+                                Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show()
+                            } finally {
+                                binding.editLoad.visibility = View.INVISIBLE
+                                Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+                                backToStoreActions(shop)
+                            }
                         }
                     }
 
@@ -97,7 +83,7 @@ class StoreDetailsFragment : Fragment() {
         }
     }
 
-    private suspend fun submitModifiedShop(shop: Shop){
+    private suspend fun submitModifiedShop(shop: Shop) {
         val body = createModifiedShop(shop)
         storesViewModel.editShop(body)
     }
@@ -117,8 +103,6 @@ class StoreDetailsFragment : Fragment() {
         originalShop.image
     }
 
-    private fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
-
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
@@ -133,11 +117,33 @@ class StoreDetailsFragment : Fragment() {
         }
     }
 
-    private fun moveToStoreActions(shop: Shop){
-        findNavController().navigate(StoreDetailsFragmentDirections.actionStoreDetailsFragmentToStoreActionsFragment(shop))
+    private fun isFormValid(): Boolean {
+        var isValid = true
 
+        isValid = isValidField(binding.editStoreName, "Please enter store name") && isValid
+        isValid = isValidField(binding.editStoreLocationCode, "Please enter location code") && isValid
+        isValid = isValidField(binding.editStoreDescription, "Please enter description") && isValid
+
+        return isValid
     }
-    companion object{
-        private val PICK_IMAGE_REQUEST = 1
+    private fun isValidField(editText: EditText, errorMessage: String): Boolean {
+        val fieldValue = editText.text.toString().trim()
+        return if (fieldValue.isEmpty()) {
+            editText.error = errorMessage
+            false
+        } else {
+            true
+        }
+    }
+
+    private fun backToStoreActions(shop: Shop) =
+        findNavController().navigate(
+            StoreDetailsFragmentDirections.actionStoreDetailsFragmentToStoreActionsFragment(
+                shop
+            )
+        )
+
+    companion object {
+        private const val PICK_IMAGE_REQUEST = 1
     }
 }

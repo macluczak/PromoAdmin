@@ -4,6 +4,10 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.promoadmin.R
+import java.io.File
+
+
+
 
 fun loadImageWithGlide(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
@@ -18,13 +22,16 @@ fun loadImageWithGlide(imageView: ImageView, url: String) {
 }
 
 fun loadEditImageWithGlide(imageView: ImageView, url: String) {
-    Glide.with(imageView.context)
-        .load(url)
-        .apply(
-            RequestOptions()
-                .placeholder(R.drawable.baseline_add_photo_alternate_24)
-                .error(R.drawable.baseline_add_photo_alternate_24)
-                .fitCenter()
-        )
-        .into(imageView)
+    if(!url.isStringNull()) {
+        Glide.with(imageView.context)
+            .load(url)
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.baseline_add_photo_alternate_24)
+                    .error(R.drawable.baseline_add_photo_alternate_24)
+                    .fitCenter()
+            )
+            .into(imageView)
+    }
+
 }

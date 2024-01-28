@@ -22,6 +22,12 @@ interface ShopApi {
         @Header("Authorization") token: String,
     ): Shop
 
+    @POST("/shops")
+    suspend fun createShop(
+        @Header("Authorization") token: String,
+        @Body request: ShopRequest,
+    ): Shop
+
     @POST("/shops/{shopId}/assignUser/{userId}")
     suspend fun shopAssignUser(
         @Path("shopId") shopId: String,

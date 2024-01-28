@@ -1,9 +1,11 @@
 package com.example.promoadmin.di
 
 import com.example.api.authorization.AuthApi
+import com.example.api.firebase.FirebaseStorageRepository
 import com.example.api.product.ProductApi
 import com.example.api.shop.ShopApi
 import com.example.api.user.UserApi
+import com.example.promoadmin.repositories.FirebaseStorageRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,5 +48,11 @@ object ApiModule {
     @Singleton
     fun provideUserRepository(retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorageRepository(): FirebaseStorageRepository {
+        return FirebaseStorageRepositoryImpl()
     }
 }

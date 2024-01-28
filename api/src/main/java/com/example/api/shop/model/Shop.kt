@@ -13,8 +13,6 @@ data class Shop(
     var image: String,
     var locationCode: String,
     var products: List<Product>,
-    var createdAt: Date?,
-    var updatedAt: Date?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -26,8 +24,6 @@ data class Shop(
         mutableListOf<Product>().apply {
             parcel.readList(this, Product::class.java.classLoader)
         },
-        parcel.readSerializable() as Date?,
-        parcel.readSerializable() as Date?
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -37,8 +33,6 @@ data class Shop(
         parcel.writeString(image)
         parcel.writeString(locationCode)
         parcel.writeList(products)
-        parcel.writeSerializable(createdAt)
-        parcel.writeSerializable(updatedAt)
     }
 
     override fun describeContents(): Int {

@@ -3,11 +3,9 @@ package com.example.promoadmin.repositories
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.api.authorization.model.Login
 import com.example.api.user.UserApi
 import com.example.api.user.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
-import retrofit2.Response
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -45,6 +43,10 @@ class UserRepository @Inject constructor(
         Log.d("GET USER", userId)
         return userApi.getUser(userId, "Bearer $jwtToken")
     }
+
+    suspend fun getAllUsers(): List<User> =
+         userApi.getAllUsers("Bearer $jwtToken")
+
     fun isUserLoggedIn(): Boolean {
         getUserIdAndToken()
         return userId.isNotEmpty() && jwtToken.isNotEmpty()

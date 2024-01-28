@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
                 recyclerView = binding.recyclerView
                 recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-                storesAdapter = StoresListAdapter(shops, ::handleOfferClick)
+                storesAdapter = StoresListAdapter(shops.sortedBy { it.name }, ::handleOfferClick)
                 recyclerView.adapter = storesAdapter
             }
         }

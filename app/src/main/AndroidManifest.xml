@@ -35,9 +35,10 @@
         </activity>
         <activity
             android:name=".feature.authentication.AuthActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".ui.HomeActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true" />
     </application>
 

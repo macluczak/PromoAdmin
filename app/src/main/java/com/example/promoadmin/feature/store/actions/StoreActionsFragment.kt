@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.api.shop.model.Shop
-import com.example.promoadmin.R
 import com.example.promoadmin.databinding.FragmentStoreActionsBinding
 import com.example.promoadmin.feature.store.StoresViewModel
 import com.example.promoadmin.feature.store.actions.model.StoreActions
@@ -38,15 +36,7 @@ class StoreActionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStoreActionsBinding.inflate(inflater, container, false)
-        binding.swipeLayout.setOnRefreshListener {
-            refreshData()
-        }
-        return  binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        refreshData()
         storesViewModel.shop.observe(viewLifecycleOwner){ shop ->
             if(shop != null) {
                 shopObject = shop
@@ -63,6 +53,16 @@ class StoreActionsFragment : Fragment() {
                 recyclerView.adapter = storesAdapter
             }
         }
+
+        binding.swipeLayout.setOnRefreshListener {
+            refreshData()
+        }
+        return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        refreshData()
     }
 
     private fun refreshData() {
@@ -73,7 +73,7 @@ class StoreActionsFragment : Fragment() {
 
     private fun handleActionClick(actions: StoreActions) = when(actions){
         StoreActions.EditStore -> moveToStoreDetails()
-        StoreActions.EditProduct -> {}
+        StoreActions.EditProduct -> moveToProductList()
         StoreActions.AddProduct -> {}
     }
 
@@ -82,7 +82,10 @@ class StoreActionsFragment : Fragment() {
         _binding = null
     }
 
-    private fun moveToStoreDetails(){
-        findNavController().navigate(StoreActionsFragmentDirections.actionStoreActionsFragmentToStoreDetailsFragment(shopObject))}
+    private fun moveToStoreDetails()=
+        findNavController().navigate(StoreActionsFragmentDirections.actionStoreActionsFragmentToStoreDetailsFragment(shopObject))
+
+    private fun moveToProductList()=
+        findNavController().navigate(StoreActionsFragmentDirections.actionStoreActionsFragmentToProductListFragment(shopObject))
 
 }
