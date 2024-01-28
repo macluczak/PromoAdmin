@@ -1,4 +1,4 @@
-package com.example.promoadmin.ui
+package com.example.promoadmin.feature.home
 
 import android.os.Bundle
 import android.view.WindowManager

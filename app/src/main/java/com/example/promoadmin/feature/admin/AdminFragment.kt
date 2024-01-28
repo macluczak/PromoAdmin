@@ -19,7 +19,7 @@ import com.example.promoadmin.R;
 
 import com.example.promoadmin.databinding.FragmentAdminBinding
 
-import com.example.promoadmin.ui.home.HomeViewModel
+import com.example.promoadmin.feature.home.HomeViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

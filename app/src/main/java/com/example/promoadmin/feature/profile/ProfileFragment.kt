@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.promoadmin.R
 import com.example.promoadmin.databinding.FragmentProfileBinding
-import com.example.promoadmin.ui.home.HomeViewModel
+import com.example.promoadmin.feature.home.HomeViewModel
 import com.example.promoadmin.util.toSimpleDate
 import kotlinx.coroutines.launch
 

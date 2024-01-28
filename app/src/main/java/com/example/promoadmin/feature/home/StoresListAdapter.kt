@@ -1,4 +1,4 @@
-package com.example.promoadmin.ui.home
+package com.example.promoadmin.feature.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
