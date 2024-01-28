@@ -33,3 +33,16 @@ class ValidationObject<T>(var value: T) {
         error = null
     }
 }
+
+class ValidatorHelper {
+    companion object {
+        private const val MIN_PASSWORD_LENGTH = 6
+        fun isPasswordValid(password: String): Boolean {
+            return password.length >= MIN_PASSWORD_LENGTH
+        }
+
+        fun isNonEmpty(value: String): Boolean {
+            return value.isNotEmpty()
+        }
+    }
+}

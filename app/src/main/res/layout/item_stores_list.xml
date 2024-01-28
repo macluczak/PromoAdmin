@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:elevation="10sp"
+        android:layout_marginBottom="5dp"
         app:cardBackgroundColor="@color/white"
-        android:layout_margin="5sp"
-        app:cardCornerRadius="15sp">
+      >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,31 +27,74 @@
                     android:layout_marginRight="10dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:layout_centerInParent="true"
                     android:padding="5dp"
+                    android:layout_centerInParent="true"
                     android:src="@drawable/image_24" />
 
-            <TextView
-                android:id="@+id/storesTitleTextView"
-                android:gravity="left"
-                style="@style/PromoLabel.Black.LatoBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Empik"
-                android:textColor="@color/tertiary_variant"
-                android:textSize="16dp"
-                />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/deals_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginRight="20dp"
-                style="@style/PromoLabel.Black.Lato.Medium"
-                android:textColor="@color/secondary"
-                android:textSize="16dp"
-                android:text="0 deals"/>
+
+                <TextView
+                    android:id="@+id/storesTitleTextView"
+                    android:gravity="left"
+                    style="@style/PromoLabel.Black.LatoBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Empik"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/tertiary_variant"
+                    android:textSize="18dp"
+                    />
+
+                <TextView
+                    android:id="@+id/store_location_code"
+                    style="@style/PromoLabel.Black.LatoBold.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    tools:text="B02"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/tertiary"
+                    android:textSize="12dp"
+                    />
+
+                <TextView
+                    android:id="@+id/storesDescriptionTextView"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    style="@style/PromoLabel.Black.LatoMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    tools:text="Sklep komputerowy x-kom.pl > Posiadamy niezwykle szeroką ofertę. Oferujemy fachowe doradztwo oraz atrakcyjne ceny. Zapewniamy inteligentny wybór."
+                    android:ellipsize="end"
+                    android:textColor="@color/tertiary"
+                    android:textSize="12dp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:rotation="180"
+                    android:src="@drawable/baseline_arrow_back_ios_24"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

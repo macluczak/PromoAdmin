@@ -28,12 +28,14 @@ class StoresListAdapter(private val deals: List<Shop>,  private val offerClickLi
 
     class StoresViewHolder(itemView: View,  private val offerClickListener: (Shop) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.storesTitleTextView)
-        private val counter: TextView = itemView.findViewById(R.id.deals_count)
+        private val counter: TextView = itemView.findViewById(R.id.store_location_code)
+        private val description: TextView = itemView.findViewById(R.id.storesDescriptionTextView)
         private val image: ImageView = itemView.findViewById(R.id.image)
 
         fun bind(shop: Shop) {
             title.text = shop.name
             counter.text = shop.locationCode
+            description.text = shop.description
             loadImageWithGlide(image, shop.image)
             itemView.setOnClickListener { offerClickListener(shop)}
         }

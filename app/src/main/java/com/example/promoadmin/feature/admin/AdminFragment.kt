@@ -8,18 +8,13 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.api.shop.model.Shop
 import com.example.api.shop.model.ShopRequest
-import com.example.api.user.model.User
 import com.example.promoadmin.R;
 
 import com.example.promoadmin.databinding.FragmentAdminBinding
@@ -48,7 +43,6 @@ class AdminFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         _binding = FragmentAdminBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -59,14 +53,18 @@ class AdminFragment : Fragment() {
         binding.editLl.visibility = View.VISIBLE
         homeViewModel.fetchAllUsers()
 
-        homeViewModel.user.observe(viewLifecycleOwner){ users ->
+        homeViewModel.users.observe(viewLifecycleOwner) { users ->
             val usersMap: Map<String, String> = users.associateBy({ it.id }, { it.email })
 
-            val arrayAdapter = ArrayAdapter<String>(requireActivity(), R.layout.list_item, usersMap.values.toTypedArray())
+            val arrayAdapter = ArrayAdapter<String>(
+                requireActivity(),
+                R.layout.list_item,
+                usersMap.values.toTypedArray()
+            )
             binding.autoCompleteTextView.setAdapter(arrayAdapter)
 
             binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
-                 selectedUserId = usersMap.keys.toList()[position]
+                selectedUserId = usersMap.keys.toList()[position]
             }
         }
         binding.editStoreImage.setOnClickListener { openImagePicker() }
@@ -77,7 +75,8 @@ class AdminFragment : Fragment() {
                     binding.editLoad.visibility = View.VISIBLE
                     if (isFormValid()) {
                         selectedUserId?.let { it1 ->
-                            homeViewModel.createShop(createShopFromInput(),
+                            homeViewModel.createShop(
+                                createShopFromInput(),
                                 it1
                             )
                         }
@@ -87,12 +86,10 @@ class AdminFragment : Fragment() {
                 } finally {
                     binding.editLoad.visibility = View.INVISIBLE
                     clearForm()
-                    Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
-        }
+    }
 
     private suspend fun createShopFromInput(): ShopRequest {
         return ShopRequest(
@@ -105,16 +102,18 @@ class AdminFragment : Fragment() {
 
     private suspend fun getImageUrl() =
         if (selectedImageUri != null) {
-        homeViewModel.uploadImageToFirebase(selectedImageUri).toString()
-    } else ""
+            homeViewModel.uploadImageToFirebase(selectedImageUri).toString()
+        } else ""
 
     private fun isFormValid(): Boolean {
         var isValid = true
 
         isValid = isValidField(binding.editStoreName, "Please enter store name") && isValid
-        isValid = isValidField(binding.editStoreLocationCode, "Please enter location code") && isValid
+        isValid =
+            isValidField(binding.editStoreLocationCode, "Please enter location code") && isValid
         isValid = isValidField(binding.editStoreDescription, "Please enter description") && isValid
-        isValid = isValidField(binding.autoCompleteTextView, "Please select assigned user") && isValid
+        isValid =
+            isValidField(binding.autoCompleteTextView, "Please select assigned user") && isValid
 
         return isValid
     }
@@ -142,7 +141,8 @@ class AdminFragment : Fragment() {
             binding.storeImage.setImageURI(data.data)
         }
     }
-    private fun clearForm(){
+
+    private fun clearForm() {
         binding.apply {
             editStoreName.text.clear()
             editStoreDescription.text.clear()
@@ -153,6 +153,14 @@ class AdminFragment : Fragment() {
             autoCompleteTextView.text.clear()
             autoCompleteTextView.clearListSelection()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.editStoreName.error = null
+        binding.editStoreLocationCode.error = null
+        binding.editStoreDescription.error = null
+        binding.autoCompleteTextView.error = null
     }
 
     companion object {

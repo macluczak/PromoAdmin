@@ -27,7 +27,7 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/primary_variant"
                 android:textSize="18sp"
-                android:text="Outlets" />
+                android:text="Stores" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.api.user.UserApi
 import com.example.api.user.model.User
+import com.example.api.user.model.UserRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.Response
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -46,6 +48,10 @@ class UserRepository @Inject constructor(
 
     suspend fun getAllUsers(): List<User> =
          userApi.getAllUsers("Bearer $jwtToken")
+
+    suspend fun changePassword(newPassword: String, body: UserRequest): Response<Void> =
+        userApi.changePassword(newPassword, "Bearer $jwtToken", body)
+
 
     fun isUserLoggedIn(): Boolean {
         getUserIdAndToken()
