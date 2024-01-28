@@ -7,15 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.api.product.model.Product
-import com.example.api.shop.model.Shop
 import com.example.promoadmin.databinding.FragmentProductListBinding
 import com.example.promoadmin.feature.store.StoresViewModel
 import com.example.promoadmin.feature.store.actions.StoreActionsFragmentArgs
-import com.example.promoadmin.feature.store.details.StoreDetailsFragmentDirections
 import com.example.promoshow.feature.stores.details.ProductListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,7 +49,7 @@ class ProductListFragment : Fragment() {
             recyclerView = binding.recyclerView
             recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-            productListAdapter = ProductListAdapter(shop.products, ::handleOfferClick)
+            productListAdapter = ProductListAdapter(shop.products.sortedBy { it.name }, ::handleOfferClick)
             recyclerView.adapter = productListAdapter
 
         }
@@ -65,9 +62,9 @@ class ProductListFragment : Fragment() {
             )
         )
 
-    private fun handleOfferClick(deal: Product) {
-//        findNavController().navigate(
-//            FavouritesFragmentDirections.actionFavouritesFragmentToDealsDetailsActivity(deal)
-//        )
+    private fun handleOfferClick(product: Product) {
+        findNavController().navigate(
+            ProductListFragmentDirections.actionProductListFragmentToProductDetailsFragment(product, args.shopObject)
+        )
     }
 }

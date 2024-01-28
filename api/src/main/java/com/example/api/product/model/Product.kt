@@ -2,6 +2,7 @@ package com.example.api.product.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.api.shop.model.Shop
 import kotlinx.serialization.Serializable
 import java.util.*
 
@@ -68,3 +69,16 @@ data class Product(
         }
     }
 }
+
+data class ProductRequest(
+    val id: UUID? = null,
+    val name: String,
+    val description: String,
+    val price: Double,
+    val discountPrice: Double,
+    val image: String,
+    val amount: Int,
+    val category: String,
+    val maker: String,
+    val shop: Shop,
+)

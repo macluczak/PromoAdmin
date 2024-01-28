@@ -28,13 +28,7 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideProductApi(retrofit: Retrofit): ProductApi {
-        return retrofit.create(ProductApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideShopApi(retrofit: Retrofit): ShopApi {
+    fun provideShopRepository(retrofit: Retrofit): ShopApi {
         return retrofit.create(ShopApi::class.java)
     }
 
@@ -48,6 +42,12 @@ object ApiModule {
     @Singleton
     fun provideUserRepository(retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(retrofit: Retrofit): ProductApi {
+        return retrofit.create(ProductApi::class.java)
     }
 
     @Provides

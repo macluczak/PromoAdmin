@@ -1,17 +1,16 @@
 package com.example.promoadmin.ui.home
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.api.firebase.FirebaseStorageRepository
-import com.example.api.shop.ShopApi
 import com.example.api.shop.model.Shop
 import com.example.api.shop.model.ShopRequest
 import com.example.api.user.model.User
 import com.example.api.user.model.UserRequest
+import com.example.promoadmin.repositories.ShopRepository
 import com.example.promoadmin.repositories.UserRepository
 import com.example.promoadmin.util.ValidatorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val shopApi: ShopApi,
+    private val shopRepository: ShopRepository,
     private val userRepository: UserRepository,
     private val firebaseStorageRepository: FirebaseStorageRepository,
 ) : ViewModel() {
@@ -46,9 +45,9 @@ class HomeViewModel @Inject constructor(
     fun fetchStoresForUser() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val shops = shopApi.getShopsForUser(
+                val shops = shopRepository.getShopsForUser(
                     userRepository.userId,
-                    "Bearer ${userRepository.jwtToken}"
+                    userRepository.jwtToken
                 )
                 _shops.postValue(shops)
 
@@ -107,9 +106,8 @@ class HomeViewModel @Inject constructor(
     fun createShop(shop: ShopRequest, userId: String) =
         viewModelScope.launch {
             try {
-                val shop = shopApi.createShop("Bearer ${userRepository.jwtToken}", shop)
-                Log.d("SHOP", "${shop.id}")
-                shopApi.shopAssignUser(shop.id.toString(), userId,"Bearer ${userRepository.jwtToken}")
+                val shop = shopRepository.createShop(userRepository.jwtToken, shop)
+                shopRepository.shopAssignUser(shop.id.toString(), userId,userRepository.jwtToken)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

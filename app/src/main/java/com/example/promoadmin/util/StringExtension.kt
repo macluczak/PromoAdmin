@@ -7,7 +7,7 @@ import java.util.Date
 fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 
 fun String?.isStringNull(): Boolean =
-     this.isNullOrBlank() || this.equals("null", ignoreCase = true)
+     this.isNullOrBlank() || this.equals("null", ignoreCase = true) ||  this.equals("url", ignoreCase = true)
 
 fun String?.toSimpleDate(): String {
      if (this.isNullOrBlank()) {

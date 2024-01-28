@@ -144,6 +144,6 @@ class StoreDetailsFragment : Fragment() {
         )
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
+        const val PICK_IMAGE_REQUEST = 1
     }
 }
