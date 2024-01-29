@@ -1,9 +1,9 @@
 package com.example.promoadmin.repositories
 
-import com.example.api.product.model.Product
 import com.example.api.shop.ShopApi
 import com.example.api.shop.model.Shop
 import com.example.api.shop.model.ShopRequest
+import retrofit2.Response
 import javax.inject.Inject
 
 class ShopRepository @Inject constructor(private val shopApi: ShopApi) {
@@ -32,7 +32,7 @@ class ShopRepository @Inject constructor(private val shopApi: ShopApi) {
         return shopApi.editShop(shopId, "Bearer $token", request)
     }
 
-    suspend fun deleteShop(shopId: String, token: String): Product {
-        return shopApi.deleteShop(shopId, token)
+    suspend fun deleteShop(shopId: String, token: String): Response<Void> {
+        return shopApi.deleteShop(shopId, "Bearer $token")
     }
 }

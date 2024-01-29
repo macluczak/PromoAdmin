@@ -70,11 +70,10 @@ class StoreActionsFragment : Fragment() {
         binding.swipeLayout.isRefreshing = false
     }
 
-
     private fun handleActionClick(actions: StoreActions) = when(actions){
         StoreActions.EditStore -> moveToStoreDetails()
         StoreActions.EditProduct -> moveToProductList()
-        StoreActions.AddProduct -> {}
+        StoreActions.AddProduct -> moveToProductCreate()
     }
 
     override fun onDestroy() {
@@ -87,5 +86,8 @@ class StoreActionsFragment : Fragment() {
 
     private fun moveToProductList()=
         findNavController().navigate(StoreActionsFragmentDirections.actionStoreActionsFragmentToProductListFragment(shopObject))
+
+    private fun moveToProductCreate()=
+        findNavController().navigate(StoreActionsFragmentDirections.actionStoreActionsFragmentToProductCreateFragment(shopObject))
 
 }

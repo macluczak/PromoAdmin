@@ -1,4 +1,4 @@
-package com.example.promoadmin.feature.product.details
+package com.example.promoadmin.feature.product.create
 
 import android.app.Activity
 import android.content.Intent
@@ -22,8 +22,9 @@ import com.example.api.product.model.ProductRequest
 import com.example.promoadmin.R
 import com.example.promoadmin.databinding.FragmentProductDetailsBinding
 import com.example.promoadmin.feature.product.ProductViewModel
+import com.example.promoadmin.feature.product.details.ProductDetailsFragmentArgs
+import com.example.promoadmin.feature.product.details.ProductDetailsFragmentDirections
 import com.example.promoadmin.feature.store.details.StoreDetailsFragment
-import com.example.promoadmin.util.DialogUtils
 import com.example.promoadmin.util.loadEditImageWithGlide
 import com.example.promoadmin.util.priceToText
 import com.example.promoadmin.util.toEditable
@@ -32,9 +33,9 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 @AndroidEntryPoint
-class ProductDetailsFragment : Fragment() {
+class ProductCreateFragment : Fragment() {
 
-    private val args by navArgs<ProductDetailsFragmentArgs>()
+    private val args by navArgs<ProductCreateFragmentArgs>()
     private var _binding: FragmentProductDetailsBinding? = null
 
     private val productViewModel: ProductViewModel by viewModels({ requireActivity() })
@@ -50,17 +51,11 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val product = args.productObject
-
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         binding.productBackButton.setOnClickListener { backToProductsList() }
 
-        binding.headerTitle.text = "Add Product"
-        binding.editDelete.apply {
-            visibility = View.VISIBLE
-            setOnClickListener { deleteProduct(product) }
-        }
-
+        binding.headerTitle.text = "Edit Product"
+        binding.editDelete.visibility = View.INVISIBLE
 
         val categoryList = Category.values().map { it.name }
 
@@ -75,23 +70,13 @@ class ProductDetailsFragment : Fragment() {
             selectedCategory = Category.values()[position].name
         }
 
-        selectedCategory = product.category
-
-        binding.categoryAutoCompleteTextView.setText(product.category, false)
-        loadEditImageWithGlide(binding.productImage, product.image)
-        binding.productMaker.text = product.maker.toEditable()
-        binding.productDescription.text = product.description.toEditable()
-        binding.productName.text = product.name.toEditable()
-        binding.productPrice.text = product.price.priceToText().toEditable()
-        binding.productDiscount.text = product.discountPrice?.priceToText()?.toEditable()
-
         binding.productImage.setOnClickListener { openImagePicker() }
         binding.editSave.setOnClickListener {
             if (isFormValid()) {
                 lifecycleScope.launch {
                     try {
                         binding.editLoad.visibility = View.VISIBLE
-                        submitModifiedProduct(product)
+                        submitNewProduct()
 
                     } catch (_: IOException) {
                     } finally {
@@ -107,40 +92,29 @@ class ProductDetailsFragment : Fragment() {
     }
 
 
-    private suspend fun submitModifiedProduct(product: Product) {
-        val body = createModifiedProduct(product)
-        productViewModel.editProduct(body)
+    private suspend fun submitNewProduct() {
+        val body = createNewProduct()
+        productViewModel.addProduct(body)
     }
 
-    private fun deleteProduct(product: Product) =
-        DialogUtils.showConfirmationDialog(
-            context = requireActivity(),
-            title ="Delete Product",
-            message = "Deleting ${product.name.trim()} is irreversible. Do you really want to proceed?",
-            onConfirm = { productViewModel.deleteProduct(product.id.toString()); backToProductsList()},
-            onCancel = {},
-            )
-
-    private suspend fun createModifiedProduct(product: Product): ProductRequest {
+    private suspend fun createNewProduct(): ProductRequest {
         return ProductRequest(
-            id = product.id,
             name = binding.productName.text.toString(),
             description = binding.productDescription.text.toString(),
             price = binding.productPrice.text.toString().toDouble(),
             discountPrice = binding.productDiscount.text.toString().toDouble(),
             maker = binding.productMaker.text.toString(),
-            image = getImageUrl(product),
-            amount = product.amount,
+            image = getImageUrl(),
+            amount = 1,
             category = selectedCategory!!,
             shop = args.shopObject
-
         )
     }
 
-    private suspend fun getImageUrl(product: Product) = if (selectedImageUri != null) {
+    private suspend fun getImageUrl() = if (selectedImageUri != null) {
         productViewModel.uploadImageToFirebase(selectedImageUri).toString()
     } else {
-        product.image
+       ""
     }
 
     private fun openImagePicker() {
@@ -182,7 +156,7 @@ class ProductDetailsFragment : Fragment() {
 
     private fun backToProductsList() {
         findNavController().navigate(
-            ProductDetailsFragmentDirections.actionProductDetailsFragmentToProductListFragment(
+            ProductCreateFragmentDirections.actionProductCreateFragmentToStoreActionsFragment(
                 args.shopObject
             )
         )

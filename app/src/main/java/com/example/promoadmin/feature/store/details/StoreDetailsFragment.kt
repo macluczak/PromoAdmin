@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.example.api.shop.model.ShopRequest
 import com.example.promoadmin.databinding.FragmentStoreDetailsBinding
 import com.example.promoadmin.feature.store.StoresViewModel
 import com.example.promoadmin.feature.store.actions.StoreActionsFragmentArgs
+import com.example.promoadmin.util.DialogUtils
 import com.example.promoadmin.util.loadEditImageWithGlide
 import com.example.promoadmin.util.toEditable
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,13 +48,18 @@ class StoreDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentStoreDetailsBinding.inflate(inflater, container, false)
         storesViewModel.fetchStoreDetails(args.shopObject.id.toString())
-        binding.storeBackButton.setOnClickListener { backToStoreActions(args.shopObject) }
+        storesViewModel.getUser()
+        binding.storeBackButton.setOnClickListener { backToStoreActions() }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.editLl.visibility = View.INVISIBLE
+        storesViewModel.userData.observe(viewLifecycleOwner) {
+            Log.d("ROLE", it.role)
+            binding.editDelete.visibility = if (it.role == "admin") View.VISIBLE else View.INVISIBLE
+        }
         storesViewModel.shop.observe(viewLifecycleOwner) { shop ->
             if (shop != null) {
                 loadEditImageWithGlide(binding.storeImage, shop.image)
@@ -61,6 +68,8 @@ class StoreDetailsFragment : Fragment() {
                 binding.editStoreName.text = shop.name.toEditable()
                 binding.editStoreImage.setOnClickListener { openImagePicker() }
                 binding.editLl.visibility = View.VISIBLE
+                binding.editDelete.setOnClickListener { deleteProduct(shop) }
+
                 binding.editSave.setOnClickListener {
                     if (isFormValid()) {
                         lifecycleScope.launch {
@@ -73,7 +82,7 @@ class StoreDetailsFragment : Fragment() {
                             } finally {
                                 binding.editLoad.visibility = View.INVISIBLE
                                 Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
-                                backToStoreActions(shop)
+                                backToStoreActions()
                             }
                         }
                     }
@@ -96,6 +105,15 @@ class StoreDetailsFragment : Fragment() {
             image = getImageUrl(originalShop)
         )
     }
+
+    private fun deleteProduct(shop: Shop) =
+        DialogUtils.showConfirmationDialog(
+            context = requireActivity(),
+            title = "Delete Store",
+            message = "Deleting ${shop.name.trim()} is irreversible. Do you really want to proceed?",
+            onConfirm = { storesViewModel.deleteStore(shop.id.toString()); requireActivity().finish() },
+            onCancel = {},
+        )
 
     private suspend fun getImageUrl(originalShop: Shop) = if (selectedImageUri != null) {
         storesViewModel.uploadImageToFirebase(selectedImageUri).toString()
@@ -121,11 +139,13 @@ class StoreDetailsFragment : Fragment() {
         var isValid = true
 
         isValid = isValidField(binding.editStoreName, "Please enter store name") && isValid
-        isValid = isValidField(binding.editStoreLocationCode, "Please enter location code") && isValid
+        isValid =
+            isValidField(binding.editStoreLocationCode, "Please enter location code") && isValid
         isValid = isValidField(binding.editStoreDescription, "Please enter description") && isValid
 
         return isValid
     }
+
     private fun isValidField(editText: EditText, errorMessage: String): Boolean {
         val fieldValue = editText.text.toString().trim()
         return if (fieldValue.isEmpty()) {
@@ -136,10 +156,10 @@ class StoreDetailsFragment : Fragment() {
         }
     }
 
-    private fun backToStoreActions(shop: Shop) =
+    private fun backToStoreActions() =
         findNavController().navigate(
             StoreDetailsFragmentDirections.actionStoreDetailsFragmentToStoreActionsFragment(
-                shop
+                args.shopObject
             )
         )
 

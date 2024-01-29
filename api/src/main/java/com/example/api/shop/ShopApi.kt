@@ -1,8 +1,8 @@
 package com.example.api.shop
 
-import com.example.api.product.model.Product
 import com.example.api.shop.model.Shop
 import com.example.api.shop.model.ShopRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -52,6 +52,6 @@ interface ShopApi {
     suspend fun deleteShop(
         @Path("id") shopId: String,
         @Header("Authorization") token: String,
-    ): Product
+    ): Response<Void>
 
 }

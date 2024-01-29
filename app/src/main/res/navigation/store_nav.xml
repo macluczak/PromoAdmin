@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_storeActionsFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_storeActionsFragment_to_productCreateFragment"
+            app:destination="@id/productCreateFragment" />
 
 
     </fragment>
@@ -69,5 +72,17 @@
             android:id="@+id/action_productDetailsFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/productCreateFragment"
+        android:name="com.example.promoadmin.feature.product.create.ProductCreateFragment"
+        android:label="fragment_product_create"
+        tools:layout="@layout/fragment_product_details">
+        <argument
+            android:name="shop_object"
+            app:argType="com.example.api.shop.model.Shop" />
+        <action
+            android:id="@+id/action_productCreateFragment_to_storeActionsFragment"
+            app:destination="@id/storeActionsFragment" />
     </fragment>
 </navigation>

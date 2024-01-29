@@ -30,6 +30,20 @@ class ProductViewModel @Inject constructor(
         )
     }
 
+    fun addProduct(productRequest: ProductRequest) = viewModelScope.launch {
+        productRepository.addProduct(
+            jwtToken = userRepository.jwtToken,
+            product = productRequest,
+        )
+    }
+
+    fun deleteProduct(productId: String) = viewModelScope.launch {
+        productRepository.deleteProduct(
+            jwtToken = userRepository.jwtToken,
+            id = productId
+        )
+    }
+
     suspend fun uploadImageToFirebase(selectedImageUri: Uri?): Uri? =
         firebaseStorageRepository.uploadImageToFirebase(selectedImageUri)
 

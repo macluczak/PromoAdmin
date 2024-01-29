@@ -2,6 +2,7 @@ package com.example.api.product
 
 import com.example.api.product.model.Product
 import com.example.api.product.model.ProductRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -32,5 +33,5 @@ interface ProductApi {
     suspend fun deleteProduct(
         @Path("id") productId: String,
         @Header("Authorization") token: String,
-    ): Product
+    ): Response<Void>
 }
