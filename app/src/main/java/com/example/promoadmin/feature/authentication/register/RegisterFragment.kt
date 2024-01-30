@@ -36,6 +36,7 @@ class RegisterFragment : Fragment() {
                 val email = binding.editTextEmail.text.toString()
                 val password = binding.editTextPassword.text.toString()
                 authViewModel.tryRegister(email, password)
+                authViewModel.clearAllErrors()
             }
 
             authViewModel.emailError.observe(viewLifecycleOwner) { showError(binding.editTextEmail, it) }

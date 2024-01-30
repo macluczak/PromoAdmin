@@ -3,6 +3,7 @@ package com.example.promoadmin
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.example.promoadmin.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +16,10 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.statusBarColor = resources.getColor(R.color.white)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+        }
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)

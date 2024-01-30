@@ -13,6 +13,7 @@
         android:id="@+id/store_details_header"
         android:layout_width="match_parent"
         app:cardElevation="8dp"
+        app:cardCornerRadius="0dp"
 
         android:layout_height="wrap_content">
 
@@ -59,8 +60,6 @@
         tools:visibility="visible"
         android:layout_below="@id/store_details_header"
         />
-
-
 
     <ImageView
         android:layout_width="100dp"

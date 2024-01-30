@@ -13,7 +13,6 @@ import com.example.api.product.model.Product
 import com.example.promoadmin.databinding.FragmentProductListBinding
 import com.example.promoadmin.feature.store.StoresViewModel
 import com.example.promoadmin.feature.store.actions.StoreActionsFragmentArgs
-import com.example.promoshow.feature.stores.details.ProductListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

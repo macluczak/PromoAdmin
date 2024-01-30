@@ -1,4 +1,4 @@
-package com.example.promoshow.feature.stores.details
+package com.example.promoadmin.feature.product.list
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View

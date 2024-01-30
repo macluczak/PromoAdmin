@@ -33,6 +33,12 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        refreshData()
 
         lifecycleScope.launch {
             storesViewModel.shops.observe(viewLifecycleOwner) { shops ->
@@ -45,12 +51,18 @@ class HomeFragment : Fragment() {
             }
         }
 
-        return  binding.root
+        binding.homeSwipeLl.setOnRefreshListener {
+            refreshData()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        refreshData()
+    }
+    private fun refreshData() {
         storesViewModel.fetchStoresForUser()
+        binding.homeSwipeLl.isRefreshing = false
     }
     private fun handleOfferClick(shop: Shop) {
         findNavController().navigate(

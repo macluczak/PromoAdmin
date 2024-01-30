@@ -12,6 +12,7 @@
         android:id="@+id/store_details_header"
         android:layout_width="match_parent"
         app:cardElevation="8dp"
+        app:cardCornerRadius="0dp"
         android:backgroundTint="@color/tertiary"
         android:layout_height="wrap_content">
         <RelativeLayout

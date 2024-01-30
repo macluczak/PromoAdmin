@@ -19,3 +19,5 @@ fun String?.toSimpleDate(): String {
      return parsedDate?.let { dateFormat.format(it) } ?: ""
 }
 
+fun String.toDoubleSafe(): Double = this.replace(",", ".").toDouble()
+

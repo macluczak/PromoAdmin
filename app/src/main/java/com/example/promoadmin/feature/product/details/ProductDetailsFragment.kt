@@ -26,6 +26,7 @@ import com.example.promoadmin.feature.store.details.StoreDetailsFragment
 import com.example.promoadmin.util.DialogUtils
 import com.example.promoadmin.util.loadEditImageWithGlide
 import com.example.promoadmin.util.priceToText
+import com.example.promoadmin.util.toDoubleSafe
 import com.example.promoadmin.util.toEditable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class ProductDetailsFragment : Fragment() {
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         binding.productBackButton.setOnClickListener { backToProductsList() }
 
-        binding.headerTitle.text = "Add Product"
+        binding.headerTitle.text = "Edit Product"
         binding.editDelete.apply {
             visibility = View.VISIBLE
             setOnClickListener { deleteProduct(product) }
@@ -126,8 +127,8 @@ class ProductDetailsFragment : Fragment() {
             id = product.id,
             name = binding.productName.text.toString(),
             description = binding.productDescription.text.toString(),
-            price = binding.productPrice.text.toString().toDouble(),
-            discountPrice = binding.productDiscount.text.toString().toDouble(),
+            price = binding.productPrice.text.toString().toDoubleSafe(),
+            discountPrice = binding.productDiscount.text.toString().toDoubleSafe(),
             maker = binding.productMaker.text.toString(),
             image = getImageUrl(product),
             amount = product.amount,

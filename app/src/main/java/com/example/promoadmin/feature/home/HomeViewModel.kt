@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
                     userRepository.userId,
                     userRepository.jwtToken
                 )
-                _shops.postValue(shops)
+                    _shops.postValue(shops)
 
             } catch (e: Exception) {
                 e.printStackTrace()
