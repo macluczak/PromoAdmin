@@ -17,7 +17,6 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun isUserLoggedIn(): Boolean {
-        Log.d("USER_PREFS",  userRepository.isUserLoggedIn().toString())
         return userRepository.isUserLoggedIn()}
 
     suspend fun getUser() = userRepository.getUserData()

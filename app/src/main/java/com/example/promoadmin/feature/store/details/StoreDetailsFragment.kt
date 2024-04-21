@@ -57,7 +57,6 @@ class StoreDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.editLl.visibility = View.INVISIBLE
         storesViewModel.userData.observe(viewLifecycleOwner) {
-            Log.d("ROLE", it.role)
             binding.editDelete.visibility = if (it.role == "admin") View.VISIBLE else View.INVISIBLE
         }
         storesViewModel.shop.observe(viewLifecycleOwner) { shop ->

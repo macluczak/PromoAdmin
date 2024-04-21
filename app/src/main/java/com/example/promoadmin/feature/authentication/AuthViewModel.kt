@@ -70,7 +70,6 @@ class AuthViewModel @Inject constructor(
             try {
                 val response = authRepository.loginUser(email, password)
                 if (response.isSuccessful) {
-                    Log.d("API", "${response.body()}")
                     handleLoginSuccess(response.body())
                 } else {
                     handleLoginFailure()
@@ -115,7 +114,6 @@ class AuthViewModel @Inject constructor(
             try {
                 val response = authRepository.registerUser(email, password)
                 if (response.isSuccessful) {
-                    Log.d("API CALL", "REGISTER ${response.code()}")
                 } else {
                     handleRegisterFailure()
                 }
