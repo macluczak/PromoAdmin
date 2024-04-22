@@ -19,7 +19,16 @@ class SplashViewModel @Inject constructor(
     fun isUserLoggedIn(): Boolean {
         return userRepository.isUserLoggedIn()}
 
-    suspend fun getUser() = userRepository.getUserData()
+    fun getUser(onSuccess: (User) -> Unit, onError: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                val user = userRepository.getUserData()
+                onSuccess(user)
+            } catch (e: Exception) {
+                onError()
+            }
+        }
+    }
 
     fun logoutUser() = userRepository.logoutUser()
 

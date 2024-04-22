@@ -3,6 +3,7 @@ package com.example.promoadmin
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.example.promoadmin.databinding.ActivitySplashBinding
@@ -20,6 +21,8 @@ class SplashActivity : AppCompatActivity() {
         WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = false
         }
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)

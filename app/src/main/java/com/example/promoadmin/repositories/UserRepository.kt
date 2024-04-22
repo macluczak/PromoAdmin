@@ -7,7 +7,10 @@ import com.example.api.user.UserApi
 import com.example.api.user.model.User
 import com.example.api.user.model.UserRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
+import java.lang.Exception
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -41,7 +44,15 @@ class UserRepository @Inject constructor(
 
     suspend fun getUserData(): User {
         getUserIdAndToken()
-        return userApi.getUser(userId, "Bearer $jwtToken")
+        try {
+            return userApi.getUser(userId, "Bearer $jwtToken")
+        } catch (e: HttpException) {
+            throw Exception("Problem with fetching user data: HTTP error ${e.code()}")
+        } catch (e: IOException) {
+            throw Exception("Problem with fetching user data: Network error")
+        } catch (e: Exception) {
+            throw Exception("Problem with fetching user data: ${e.message}")
+        }
     }
 
     suspend fun getAllUsers(): List<User> =

@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.api.user.model.User
 import com.example.promoadmin.databinding.FragmentSplashBinding
 
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.io.IOException
+
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
@@ -23,6 +21,16 @@ class SplashFragment : Fragment() {
 
     private val splashViewModel: SplashViewModel by viewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (splashViewModel.isUserLoggedIn()) {
+            splashViewModel.getUser(::moveToHomeDestination, ::moveToRegisterDestination)
+        } else {
+            moveToRegisterDestination()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,34 +38,19 @@ class SplashFragment : Fragment() {
     ): View {
 
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
-
-        if (splashViewModel.isUserLoggedIn()) {
-            lifecycleScope.launch {
-                try {
-                    val user = splashViewModel.getUser()
-                    moveToHomeDestination(user)
-
-                }
-                catch (e: IOException){
-                    splashViewModel.logoutUser()
-                    moveToRegisterDestination()
-
-                }
-            }
-        } else
-            moveToRegisterDestination()
-
-        activity?.finish()
         return binding.root
     }
 
-    private fun moveToRegisterDestination() =
+    private fun moveToRegisterDestination() = if(isAdded) {
         findNavController().navigate(R.id.action_splashFragment_to_authActivity)
+        activity?.finish()
+    } else null
 
-    private fun moveToHomeDestination(user: User) =
-        findNavController().navigate(
-            SplashFragmentDirections.actionSplashFragmentToHomeActivity(user)
-        )
+    private fun moveToHomeDestination(user: User) = if (isAdded) {
+        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeActivity(user))
+        activity?.finish()
+    }
+    else null
 
     override fun onDestroyView() {
         super.onDestroyView()
