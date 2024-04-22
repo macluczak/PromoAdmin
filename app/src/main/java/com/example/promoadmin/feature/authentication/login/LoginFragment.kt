@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
         authViewModel.user.observe(viewLifecycleOwner) {
             if (it != null) {
                 moveToHomeDestination(it)
-                activity?.finish()
+                activity?.finishAffinity()
             }
 
         }
