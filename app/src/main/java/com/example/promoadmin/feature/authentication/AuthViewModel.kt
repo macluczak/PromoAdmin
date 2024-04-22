@@ -52,21 +52,22 @@ class AuthViewModel @Inject constructor(
         _passwordError.value = null
     }
 
-    fun tryLogin(email: String, password: String) {
+    fun tryLogin(email: String, password: String, onStart: () -> Unit, onFinish: () -> Unit) {
         emailValidation.value = email
         passwordValidation.value = password
 
         clearAllErrors()
         if (emailValidator.validate() && passwordValidator.validate()) {
-            loginUserInternal(email, password)
+            loginUserInternal(email, password, onStart, onFinish)
         } else {
             _emailError.value = emailValidation.error
             _passwordError.value = passwordValidation.error
         }
     }
 
-    private fun loginUserInternal(email: String, password: String) {
+    private fun loginUserInternal(email: String, password: String, onStart: () -> Unit, onFinish: () -> Unit) {
         viewModelScope.launch {
+            onStart()
             try {
                 val response = authRepository.loginUser(email, password)
                 if (response.isSuccessful) {
@@ -77,6 +78,7 @@ class AuthViewModel @Inject constructor(
             } catch (e: Exception) {
                 handleException(e)
             }
+            onFinish()
         }
     }
 

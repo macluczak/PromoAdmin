@@ -9,7 +9,6 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.api.shop.model.Shop
 import com.example.api.user.model.User
 
 import com.example.promoadmin.R
@@ -38,7 +37,7 @@ class LoginFragment : Fragment() {
         binding.logSignInButton.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
-            authViewModel.tryLogin(email, password)
+            authViewModel.tryLogin(email, password, ::loadingStart, ::loadingEnd)
         }
 
         authViewModel.emailError.observe(viewLifecycleOwner) {
@@ -79,6 +78,14 @@ class LoginFragment : Fragment() {
         findNavController().navigate(
             LoginFragmentDirections.actionRegisterFragmentToHomeActivity(user)
         )
+
+    private fun loadingStart() {
+        binding.loadingLogin.visibility = View.VISIBLE
+    }
+
+    private fun loadingEnd() {
+        binding.loadingLogin.visibility = View.GONE
+    }
 
     override fun onDestroy() {
         super.onDestroy()
